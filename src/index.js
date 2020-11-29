@@ -1,11 +1,10 @@
 import './styles.css';
 import card from './template/renderCard.hbs';// разметка одной страны
 import list from './template/renderLi.hbs'; // разметка списка стран
-import { defaults } from '@pnotify/core';
-defaults.delay = '1000';
 const debounce = require('lodash.debounce');
-
-
+const { error } = require('@pnotify/core');
+import "@pnotify/core/dist/PNotify.css";
+import "@pnotify/core/dist/BrightTheme.css";
 
 
 
@@ -21,8 +20,6 @@ function fetchCountry(name) {
 }
 
 
-
-
 refs.form.addEventListener('input', debounce(onSearch, 500))
 
 function onSearch(e) {
@@ -34,15 +31,15 @@ fetchCountry(searhGuery).then(result)
 }
 
 function result(answer) {
-  // if (answer.length > 10) return pushError(error);
-    if (answer.length === 1) return renderCard(answer);
-    if (answer.length > 1) return renderCountryes(answer)
+   if (answer.length > 10) return pushError(error);
+     if (answer.length === 1) return renderCard(answer);
+    if (answer.length > 1 && answer.length < 9) return renderCountryes(answer)
 }
 
 
 function pushError(err) {
     error({
-        text: err
+        text: "Введите правильный запрос"
     })
 };
 
@@ -60,4 +57,3 @@ refs.conteiner.innerHTML = markup;
         const markup = list(country);
         refs.conteiner.innerHTML = markup;
     }
-
